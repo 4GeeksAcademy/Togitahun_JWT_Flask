@@ -3,7 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         store: {
             user: null,
             isAuthenticated: false,
-            apiUrl: process.env.BACKEND_URL || "http://localhost:3001",
+            apiUrl: import.meta.env.VITE_BACKEND_URL || "http://localhost:3001", // Updated to use import.meta.env instead of process.env
             message: null
         },
         actions: {
