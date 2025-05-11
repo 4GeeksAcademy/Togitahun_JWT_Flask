@@ -1,52 +1,36 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
+import "../../styles/home.css";
 
 export const Home = () => {
-
-	const { store, dispatch } = useGlobalReducer()
-
-	const loadMessage = async () => {
-		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
-
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
-
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
-
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-	useEffect(() => {
-		loadMessage()
-	}, [])
+	const { store } = useContext(Context);
 
 	return (
 		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
+			<h1>Welcome to React Auth App</h1>
 			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
+				A simple application with authentication using React, Flask, and JWT
 			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
+
+			{store.isAuthenticated ? (
+				<div className="mt-4">
+					<p>You are logged in as {store.user?.email}</p>
+					<Link to="/welcome" className="btn btn-primary">
+						Go to Welcome Page
+					</Link>
+				</div>
+			) : (
+				<div className="mt-4">
+					<p>Please log in or sign up to access the welcome page</p>
+					<Link to="/login" className="btn btn-primary me-2">
+						Login
+					</Link>
+					<Link to="/signup" className="btn btn-outline-primary">
+						Sign Up
+					</Link>
+				</div>
+			)}
 		</div>
 	);
-}; 
+};
