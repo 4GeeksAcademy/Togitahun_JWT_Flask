@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { useAuth } from "../store/AuthContext";
 
 export const Home = () => {
-	const { store } = useContext(Context);
+	const { isAuthenticated, user } = useAuth();
 
 	return (
 		<div className="text-center mt-5">
@@ -12,9 +12,9 @@ export const Home = () => {
 				A simple application with authentication using React, Flask, and JWT
 			</p>
 
-			{store.isAuthenticated ? (
+			{isAuthenticated ? (
 				<div className="mt-4">
-					<p>You are logged in as {store.user?.email}</p>
+					<p>You are logged in as {user?.email}</p>
 					<Link to="/welcome" className="btn btn-primary">
 						Go to Welcome Page
 					</Link>

@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { useAuth } from "../store/AuthContext";
 
 export const Navbar = () => {
-	const { store, actions } = useContext(Context);
+	const { isAuthenticated, user, logout } = useAuth();
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
-		actions.logout();
+		logout();
 		navigate("/login");
 	};
 
@@ -18,9 +18,9 @@ export const Navbar = () => {
 					<span className="navbar-brand mb-0 h1">React Auth App</span>
 				</Link>
 				<div className="ml-auto">
-					{store.isAuthenticated ? (
+					{isAuthenticated ? (
 						<>
-							<span className="me-3">Hello, {store.user?.email}</span>
+							<span className="me-3">Hello, {user?.email}</span>
 							<button className="btn btn-outline-danger" onClick={handleLogout}>
 								Logout
 							</button>

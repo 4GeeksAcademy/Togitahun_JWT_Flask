@@ -14,7 +14,7 @@ const Main = () => {
 
     return (
         <React.StrictMode>
-            <Layout />  {/* Render the Layout component which has context already injected */}
+            <Layout />  {/* Render the Layout component which has AuthProvider */}
         </React.StrictMode>
     );
 }

@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { useAuth } from "../store/AuthContext";
 
 export const Login = () => {
-    const { store, actions } = useContext(Context);
+    const { isAuthenticated, message, login, clearMessage } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -11,10 +11,10 @@ export const Login = () => {
 
     // Redirect if already logged in
     useEffect(() => {
-        if (store.isAuthenticated) {
+        if (isAuthenticated) {
             navigate("/welcome");
         }
-    }, [store.isAuthenticated]);
+    }, [isAuthenticated]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +27,7 @@ export const Login = () => {
         }
 
         // Try to log in
-        const success = await actions.login(email, password);
+        const success = await login(email, password);
         if (success) {
             navigate("/welcome");
         }
@@ -38,13 +38,13 @@ export const Login = () => {
             <div className="auth-form">
                 <h2>Login</h2>
 
-                {store.message && (
+                {message && (
                     <div className="alert alert-info" role="alert">
-                        {store.message}
+                        {message}
                         <button
                             type="button"
                             className="btn-close float-end"
-                            onClick={() => actions.clearMessage()}
+                            onClick={clearMessage}
                         />
                     </div>
                 )}

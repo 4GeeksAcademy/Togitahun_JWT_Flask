@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { Context } from "../store/appContext";
+import { useAuth } from "../store/AuthContext";
 
 export const ProtectedRoute = ({ children }) => {
-    const { store } = useContext(Context);
+    const { isAuthenticated } = useAuth();
 
     // If not authenticated, redirect to login
-    if (!store.isAuthenticated) {
+    if (!isAuthenticated) {
         return <Navigate to="/login" />;
     }
 
